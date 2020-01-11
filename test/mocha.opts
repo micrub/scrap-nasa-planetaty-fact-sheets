@@ -1,0 +1,2 @@
+--file "test/requires.js"
+--require @babel/register
