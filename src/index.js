@@ -1,3 +1,6 @@
+const rp = require('request-promise');
+const validator = require('validator');
+
 function configLoader() {
   let cfg;
   try {
@@ -7,7 +10,21 @@ function configLoader() {
   }
   return cfg;
 }
+/**
+ * getContent
+ *
+ * @param url
+ * @returns {Promise}
+ */
+
+function getContent(url) {
+  if (!validator.isURL(url)) {
+    throw new Error('Non valid url: ' + url);
+  }
+  return rp(url);
+}
 
 module.exports = {
-  configLoader
+  configLoader,
+  getContent
 };

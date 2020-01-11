@@ -26,4 +26,25 @@ describe('entry point', function() {
       expect(url).to.be.not.empty;
     });
   });
+  describe('getContent', function() {
+    let config, url;
+    before(function() {
+      config = ep.configLoader();
+      url = config.parsed.ROOTURL;
+    });
+    it('should have getContent Function', function() {
+      expect(ep.getContent).to.be.instanceOf(Function);
+    });
+    it('should returm an "promise" Object when passed valid url', function() {
+      const p = ep.getContent(url);
+      expect(p).to.be.instanceOf(Object);
+    });
+
+    it('should return testual content on valid url', function() {
+      const p = ep.getContent(url);
+      p.then(v => {
+        expect(v).to.be.not.empty;
+      });
+    });
+  });
 });
