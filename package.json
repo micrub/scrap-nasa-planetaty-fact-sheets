@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-register": "^6.26.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0"
   },
