@@ -13,6 +13,7 @@
                 "babel-register": "^6.26.0",
                 "debug": "^4.1.1",
                 "dotenv": "^8.2.0",
+                "lodash": "^4.17.15",
                 "validator": "^12.1.0"
         },
         "devDependencies": {
