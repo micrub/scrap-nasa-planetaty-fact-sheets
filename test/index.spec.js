@@ -17,8 +17,13 @@ describe('entry point', function() {
     expect(ep.configLoader).to.be.instanceOf(Function);
   });
   describe('configLoader', function() {
-    it('should load an conf object', function() {
-      expect(ep.configLoader()).to.be.instanceOf(Object);
+    const config = ep.configLoader();
+    it('should load a default conf object', function() {
+      expect(config.error).to.be.undefined;
+    });
+    it('should have root url for parsing', function() {
+      const url = config.parsed.ROOTURL;
+      expect(url).to.be.not.empty;
     });
   });
 });
