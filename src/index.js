@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const validator = require('validator');
 const cheerio = require('cheerio');
+const crypto = require('crypto');
 
 function configLoader() {
   let cfg;
@@ -10,6 +11,12 @@ function configLoader() {
     throw new Error('Havnt found any configuration to load');
   }
   return cfg;
+}
+function checksum(str, algorithm, encoding) {
+  return crypto
+    .createHash(algorithm || 'md5')
+    .update(str, 'utf8')
+    .digest(encoding || 'hex');
 }
 /**
  * getContent
@@ -46,5 +53,6 @@ async function handleContent(contentPromise) {
 module.exports = {
   configLoader,
   getContent,
-  handleContent
+  handleContent,
+  checksum
 };

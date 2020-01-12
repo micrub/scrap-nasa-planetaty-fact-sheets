@@ -65,4 +65,16 @@ describe('entry point', function() {
       });
     });
   });
+
+  describe('checksum', function() {
+    it('should have checksum Function', function() {
+      expect(ep.checksum).to.be.instanceOf(Function);
+    });
+    it('should return check sum of content', function() {
+      const text = 'This is my test text';
+      expect(ep.checksum(text)).to.be.eq('e53815e8c095e270c6560be1bb76a65d');
+      expect(ep.checksum(text,'sha1')).to.be.eq('cd5855be428295a3cc1793d6e80ce47562d23def');
+
+    });
+  });
 });
