@@ -32,6 +32,11 @@ function getContent(url) {
   return rp(url);
 }
 
+async function getLinks(url){
+  const contentPromise = getContent(url);
+  const c = await handleContent(contentPromise);
+  return c('a');
+}
 /**
  * handleContent - dispatch a promise to GET http content for specified url
  *
@@ -40,7 +45,7 @@ function getContent(url) {
  * @returns {undefined}
  */
 
-async function handleContent(contentPromise) {
+function handleContent(contentPromise) {
   return contentPromise
     .then(content => {
       return cheerio.load(content);
@@ -50,9 +55,11 @@ async function handleContent(contentPromise) {
     });
 }
 
+
 module.exports = {
   configLoader,
   getContent,
   handleContent,
-  checksum
+  checksum,
+  getLinks
 };

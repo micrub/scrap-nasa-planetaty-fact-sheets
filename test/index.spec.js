@@ -1,13 +1,15 @@
+const _ = require('lodash');
 const chai = require('chai');
 const expect = chai.expect;
+const ep = require('../src/');
+
+const LINKSCOUNT = 30;
 
 describe('green test suite', function() {
   it('should pass', function() {
     expect(true).to.be.true;
   });
 });
-
-const ep = require('../src/');
 
 describe('entry point', function() {
   it('should be an Object', function() {
@@ -66,6 +68,21 @@ describe('entry point', function() {
     });
   });
 
+  describe('get all links from index page', function() {
+    let config, url;
+    before(function() {
+      config = ep.configLoader();
+      url = config.parsed.ROOTURL;
+    });
+    it('should ' + LINKSCOUNT + ' tags.', function() {
+      const contentPromise = ep.getContent(url);
+      const handledContent = ep.handleContent(contentPromise);
+      handledContent.then($ => {
+        expect($('a').length).to.be.eq(LINKSCOUNT);
+      });
+    });
+  });
+
   describe('checksum', function() {
     it('should have checksum Function', function() {
       expect(ep.checksum).to.be.instanceOf(Function);
@@ -73,8 +90,25 @@ describe('entry point', function() {
     it('should return check sum of content', function() {
       const text = 'This is my test text';
       expect(ep.checksum(text)).to.be.eq('e53815e8c095e270c6560be1bb76a65d');
-      expect(ep.checksum(text,'sha1')).to.be.eq('cd5855be428295a3cc1793d6e80ce47562d23def');
-
+      expect(ep.checksum(text, 'sha1')).to.be.eq(
+        'cd5855be428295a3cc1793d6e80ce47562d23def'
+      );
     });
+  });
+
+  describe('getLinks', function() {
+    let config, url;
+    let links;
+    before(async function() {
+      config = ep.configLoader();
+      url = config.parsed.ROOTURL;
+    });
+    it(
+      'getLinks should return ' + LINKSCOUNT + ' length arrays of links',
+      async function() {
+        links = await ep.getLinks(url);
+        expect(links.length).to.be.eq(LINKSCOUNT);
+      }
+    );
   });
 });
