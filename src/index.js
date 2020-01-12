@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const validator = require('validator');
+const cheerio = require('cheerio');
 
 function configLoader() {
   let cfg;
@@ -24,7 +25,26 @@ function getContent(url) {
   return rp(url);
 }
 
+/**
+ * handleContent - dispatch a promise to GET http content for specified url
+ *
+ * @param contentPromise
+ * @param handler - function that handles Promise
+ * @returns {undefined}
+ */
+
+async function handleContent(contentPromise) {
+  return contentPromise
+    .then(content => {
+      return cheerio.load(content);
+    })
+    .error(err => {
+      throw new Error(err);
+    });
+}
+
 module.exports = {
   configLoader,
-  getContent
+  getContent,
+  handleContent
 };

@@ -47,4 +47,22 @@ describe('entry point', function() {
       });
     });
   });
+
+  describe('handleContent', function() {
+    let config, url;
+    before(function() {
+      config = ep.configLoader();
+      url = config.parsed.ROOTURL;
+    });
+    it('should have handleContent Function', function() {
+      expect(ep.handleContent).to.be.instanceOf(Function);
+    });
+    it('should have 8 p html tags , in order not to break parsing.', function() {
+      const contentPromise = ep.getContent(url);
+      const handledContent = ep.handleContent(contentPromise);
+      handledContent.then($ => {
+        expect($('p').length).to.be.eq(8);
+      });
+    });
+  });
 });
