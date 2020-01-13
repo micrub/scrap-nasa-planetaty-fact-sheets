@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const rp = require('request-promise');
 const validator = require('validator');
 const cheerio = require('cheerio');
@@ -39,16 +40,10 @@ async function getLinks(url) {
   if (c instanceof Error) {
     throw c;
   }
-  //resultArr.forEach((i,elm) => {
-    //if (elm.type === 'tag' && elm.name === 'a') {
-      //const href = elm.attribs.href;
-      //let isFactFile = href.search('fact.html');
-      //if (isFactFile != -1) {
-        //return href;
-      //}
-    //}
-  //});
- return resultArr;
+  const ais = c('p > a');
+
+  resultArr == ais;
+  return resultArr;
 }
 
 /**
