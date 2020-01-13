@@ -1,7 +1,9 @@
 const _ = require('lodash');
+const { first } = _;
 const chai = require('chai');
 const expect = chai.expect;
 const ep = require('../src/');
+const ch = require('cheerio');
 
 const LINKSCOUNT = 30;
 
@@ -107,6 +109,7 @@ describe('entry point', function() {
       'getLinks should return ' + LINKSCOUNT + ' length arrays of links',
       async function() {
         links = await ep.getLinks(url);
+        console.log(links);
         expect(links.length).to.be.eq(LINKSCOUNT);
       }
     );

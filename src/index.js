@@ -32,11 +32,25 @@ function getContent(url) {
   return rp(url);
 }
 
-async function getLinks(url){
+async function getLinks(url) {
+  const resultArr = [];
   const contentPromise = getContent(url);
   const c = await handleContent(contentPromise);
-  return c('a');
+  if (c instanceof Error) {
+    throw c;
+  }
+  //resultArr.forEach((i,elm) => {
+    //if (elm.type === 'tag' && elm.name === 'a') {
+      //const href = elm.attribs.href;
+      //let isFactFile = href.search('fact.html');
+      //if (isFactFile != -1) {
+        //return href;
+      //}
+    //}
+  //});
+ return resultArr;
 }
+
 /**
  * handleContent - dispatch a promise to GET http content for specified url
  *
@@ -51,10 +65,9 @@ function handleContent(contentPromise) {
       return cheerio.load(content);
     })
     .error(err => {
-      throw new Error(err);
+      return new Error(err);
     });
 }
-
 
 module.exports = {
   configLoader,
