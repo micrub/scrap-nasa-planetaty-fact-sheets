@@ -5,7 +5,8 @@ const expect = chai.expect;
 const ep = require('../src/');
 const ch = require('cheerio');
 
-const LINKSCOUNT = 30;
+const LINKSCOUNTONPAGE = 30;
+const LINKSCOUNT = 15;
 
 describe('green test suite', function() {
   it('should pass', function() {
@@ -76,11 +77,11 @@ describe('entry point', function() {
       config = ep.configLoader();
       url = config.parsed.ROOTURL;
     });
-    it('should ' + LINKSCOUNT + ' tags.', function() {
+    it('should ' + LINKSCOUNT + ' A tags.', function() {
       const contentPromise = ep.getContent(url);
       const handledContent = ep.handleContent(contentPromise);
       handledContent.then($ => {
-        expect($('a').length).to.be.eq(LINKSCOUNT);
+        expect($('a').length).to.be.eq(LINKSCOUNTONPAGE);
       });
     });
   });
@@ -98,7 +99,7 @@ describe('entry point', function() {
     });
   });
 
-  describe('getLinks', function() {
+  describe('getPlanetLinks', function() {
     let config, url;
     let links;
     before(async function() {
@@ -106,9 +107,9 @@ describe('entry point', function() {
       url = config.parsed.ROOTURL;
     });
     it(
-      'getLinks should return ' + LINKSCOUNT + ' length arrays of links',
+      'getPlanetLinks should return ' + LINKSCOUNT + ' length arrays of links',
       async function() {
-        links = await ep.getLinks(url);
+        links = await ep.getPlanetLinks(url);
         console.log(links);
         expect(links.length).to.be.eq(LINKSCOUNT);
       }

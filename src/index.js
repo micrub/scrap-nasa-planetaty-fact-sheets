@@ -4,6 +4,14 @@ const validator = require('validator');
 const cheerio = require('cheerio');
 const crypto = require('crypto');
 
+// TODO move to implementation
+const $ = cheerio;
+
+function t(v) {
+  return $(v).text();
+}
+// END-TODO move to implementation
+
 function configLoader() {
   let cfg;
   try {
@@ -33,17 +41,35 @@ function getContent(url) {
   return rp(url);
 }
 
-async function getLinks(url) {
+async function getPlanetLinks(url) {
   const resultArr = [];
   const contentPromise = getContent(url);
   const c = await handleContent(contentPromise);
   if (c instanceof Error) {
     throw c;
   }
-  const ais = c('p > a');
+  const queryForLinksOnIndexPage = 'p > a';
+  let ais = c(queryForLinksOnIndexPage);
+  resultArr == _.identity(ais);
+  const cleanName = name => {
+    name = name.trim().match(/^(.*) Fact Sheet$/gm);
+    if (name instanceof Array) {
+      return name;
+    }
+  };
 
-  resultArr == ais;
-  return resultArr;
+  const result = [];
+
+  let meta = ais.map((k, v) => {
+    const name = cleanName(t(v));
+    if (v && v.attribs && v.attribs.href && name) {
+      let href = v.attribs.href;
+      result.pop([name, href]);
+    }
+    return result;
+  });
+
+  return meta;
 }
 
 /**
@@ -57,7 +83,7 @@ async function getLinks(url) {
 function handleContent(contentPromise) {
   return contentPromise
     .then(content => {
-      return cheerio.load(content);
+      return $.load(content);
     })
     .error(err => {
       return new Error(err);
@@ -69,5 +95,5 @@ module.exports = {
   getContent,
   handleContent,
   checksum,
-  getLinks
+  getPlanetLinks
 };
